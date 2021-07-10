@@ -1,23 +1,16 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import '../models/news.dart';
+import '/data/models/news.dart';
+import '/core/utils/constants.dart';
 
-class DBHelper {
+class DBProvider {
 
   // Private Constructor
-  DBHelper._();
-  static DBHelper dbHelper = DBHelper._();
+  DBProvider._();
+  static DBProvider dbProvider = DBProvider._();
 
   // Object from database
   Database? database;
-
-  final databaseName = 'newsDB.db';
-  static String tableName = 'articles';
-  static String articleId = 'id';
-  static String articleTitle = 'title';
-  static String articleDate = 'publishedAt';
-  static String articleImage = 'urlToImage';
-  static String articleUrl = 'url';
 
   // Initialize the database
   Future<Database?>? initDatabase() async {
@@ -33,7 +26,7 @@ class DBHelper {
   Future<Database?>? createDatabase() async {
     // Get a location using getDatabasesPath
     var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, databaseName);
+    String path = join(databasesPath, DATABASE_NAME);
     Database database = await openDatabase(path, version: 1, onCreate: _onCreate);
     return database;
   }
@@ -41,12 +34,12 @@ class DBHelper {
   // Create the tables, the columns and the rows
   void _onCreate(db, version) {
     db.execute(
-      '''CREATE TABLE $tableName (
-        $articleId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $articleTitle TEXT NOT NULL,
-        $articleDate TEXT NOT NULL,
-        $articleImage TEXT NOT NULL,
-        $articleUrl TEXT NOT NULL
+      '''CREATE TABLE $TABLE_NAME (
+        $ARTICLE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        $ARTICLE_TITLE TEXT NOT NULL,
+        $ARTICLE_DATE TEXT NOT NULL,
+        $ARTICLE_IMAGE TEXT NOT NULL,
+        $ARTICLE_URL TEXT NOT NULL
       )'''
     );
   }
@@ -55,7 +48,7 @@ class DBHelper {
   Future<List<News>?>? getArticles() async {
     database = await initDatabase();
     // this will return the articles as a "Map"
-    List<Map<String, dynamic>> result = await database!.query(tableName);
+    List<Map<String, dynamic>> result = await database!.query(TABLE_NAME);
     List<News> newsList = <News>[];
     result.forEach((news) {
       // convert the "Map" to "News" and add the news to "newsList"
@@ -65,20 +58,20 @@ class DBHelper {
   }
 
   // Insert new article in the database
-  insertNews(News news) async {
+  Future<void> insertNews(News news) async {
     try {
       database = await initDatabase();
-      await database!.insert(tableName, news.toJson());
+      await database!.insert(TABLE_NAME, news.toJson());
     } on Exception catch (e) {
       print(e);
     }
   }
 
   // Delete article from the database
-  deleteNews(News news) async {
+  Future<void> deleteNews(News news) async {
     try {
       database = await initDatabase();
-      await database!.delete(tableName, where: '$articleId=?', whereArgs: [news.id]);
+      await database!.delete(TABLE_NAME, where: '$ARTICLE_ID=?', whereArgs: [news.id]);
     } on Exception catch (e) {
       print(e);
     }

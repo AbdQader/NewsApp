@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../controllers/news_controller.dart';
-import '../models/news.dart';
-import '../screens/web_view_screen.dart';
+import '/core/utils/components.dart';
+import '/data/controllers/favorite_controller.dart';
+import '/data/models/news.dart';
+import '/views/screens/web_view_screen.dart';
 
 class FavoriteItem extends StatelessWidget {
   
-  final News? news;
+  final News news;
   final int? index;
   FavoriteItem(this.news, this.index);
 
@@ -16,13 +16,12 @@ class FavoriteItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Get.to(() => WebViewScreen(news)),
-      child: GetBuilder<NewsController>(
-        init: NewsController(),
+      child: GetBuilder<FavoriteController>(
         builder: (controller) => Dismissible(
-          key: UniqueKey(), //Key('${news!.title}'),
+          key: UniqueKey(), //Key('${news!.url}'),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
-            controller.removeNewsFromFavorite(news!);
+            controller.removeNewsFromFavorite(news);
             Get.snackbar(
               'Article Removed',
               'Article removed successfully from favorites.',
@@ -34,37 +33,35 @@ class FavoriteItem extends StatelessWidget {
               mainButton: TextButton(
                 child: Text('Undo'),
                 onPressed: () {
-                  controller.addNewsToFavorite(news!, index!);
+                  controller.addNewsToFavorite(news, index!);
                   Get.back();
                 },
               )
             );
           },
           background: Container(
-            padding: EdgeInsets.only(right: 30),
+            padding: const EdgeInsets.only(right: 30),
             color: Colors.red,
             alignment: Alignment.centerRight,
-            child: Icon(Icons.delete, color: Colors.white, size: 40),
+            child: const Icon(Icons.delete, color: Colors.white, size: 40),
           ),
           child: Padding(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: Row(
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: CachedNetworkImage(
-                    imageUrl: news!.urlToImage!,
-                    placeholder: (context, url) => Center(
-                      child: SpinKitFadingCircle(
-                        color: Theme.of(context).accentColor,
-                      ),
+                    imageUrl: news.urlToImage,
+                    placeholder: (_, url) => Center(
+                      child: showCircularProgress(),
                     ),
                     fit: BoxFit.cover,
                     height: 130.0,
                     width: 130.0,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Container(
                     height: 120.0,
@@ -74,14 +71,14 @@ class FavoriteItem extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            news!.title!,
+                            news.title,
                             style: Theme.of(context).textTheme.headline1,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 4,
                           ),
                         ),
                         Text(
-                          news!.publishedAt!,
+                          news.publishedAt,
                           style: Theme.of(context).textTheme.headline2,
                         ),
                       ],

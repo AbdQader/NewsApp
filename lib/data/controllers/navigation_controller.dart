@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../screens/favorite_screen.dart';
-import '../screens/search_screen.dart';
-import '../screens/news_screen.dart';
+import '/views/screens/favorite_screen.dart';
+import '/views/screens/search_screen.dart';
+import '/views/screens/news_screen.dart';
 
 class NavigationController extends GetxController {
 
   // Set "current screen" and "current screen index"
-  int _currentScreenIndex = 2;
-  Widget _currentScreen = FavoriteScreen();
+  int _currentScreenIndex = 0;
+  Widget _currentScreen = NewsScreen();
 
   // Get "current screen" and "current screen index"
   Widget get currentScreen => _currentScreen;

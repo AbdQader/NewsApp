@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.news_app">
+    package="com.aasharef.news_app">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="news_app"
+        android:label="Newsify"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

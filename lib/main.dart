@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import './controllers/theme_controller.dart';
-import './controllers/navigation_controller.dart';
-import './core/themes/app_theme.dart';
-import './helpers/binding.dart';
+import '/data/controllers/navigation_controller.dart';
+import '/data/controllers/theme_controller.dart';
+import '/data/controllers/news_controller.dart';
+import '/data/controllers/search_controller.dart';
+import '/data/controllers/favorite_controller.dart';
+import '/data/providers/cache_provider.dart';
+import '/core/themes/theme.dart';
+import '/routes/binding.dart';
 
 void main() async {
   // Make sure that the code below is executed before "runApp"
   WidgetsFlutterBinding.ensureInitialized();
-  await Get.put(ThemeController()).getThemeMode();
+  // Initialize Shared Preferences
+  await CacheProvider.init();
+  // Initialize Controllers
+  Get.put(NavigationController());
+  Get.put(ThemeController());
+  Get.put(NewsController());
+  Get.put(SearchController());
+  Get.put(FavoriteController());
   runApp(MyApp());
 }
 
@@ -18,10 +29,10 @@ class MyApp extends StatelessWidget {
     return Obx(() =>
       GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialBinding: Binding(),
-        themeMode: Get.put(ThemeController()).themeMode.value,
+        themeMode: Get.find<ThemeController>().themeMode.value,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
+        initialBinding: AppBinding(),
         home: MyHomePage(),
       ),
     );
@@ -29,7 +40,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final controller = Get.put(ThemeController());
+  final controller = Get.find<ThemeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,30 +51,29 @@ class MyHomePage extends StatelessWidget {
         ),
         actions: [
           Obx(() => IconButton(
-            onPressed: () => controller.changeThemeMode(),
-            icon: Icon(
-              controller.themeMode.value == ThemeMode.dark
-              ? Icons.brightness_2
-              : Icons.wb_sunny,
-              color: Theme.of(context).buttonColor,
+              onPressed: () => controller.changeThemeMode(),
+              icon: Icon(
+                controller.themeMode.value == ThemeMode.dark
+                ? Icons.brightness_2
+                : Icons.wb_sunny,
+                color: Get.theme.buttonColor,
+              ),
             ),
-          ),
           ),
         ],
       ),
       body: GetBuilder<NavigationController>(
-        init: NavigationController(),
         builder: (controller) => controller.currentScreen,
       ),
-      bottomNavigationBar: bottomNavigationBar(context),
+      bottomNavigationBar: bottomNavigationBar(),
     );
   }
 
-  Widget bottomNavigationBar(BuildContext context) {
+  Widget bottomNavigationBar() {
     return GetBuilder<NavigationController>(
       builder: (controller) => BottomNavigationBar(
         currentIndex: controller.currentScreenIndex,
-        unselectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Get.theme.primaryColor,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.article),

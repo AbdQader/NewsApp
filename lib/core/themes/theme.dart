@@ -54,7 +54,7 @@ class AppTheme {
     ),
     primarySwatch: Colors.deepPurple,
     accentColor: Colors.deepPurpleAccent,
-    primaryColor: Colors.grey[400],
+    primaryColor: Colors.white,
     canvasColor: Colors.black,
     buttonColor: Colors.white,
     dividerColor: Colors.grey[800],
