@@ -50,6 +50,7 @@ class WebViewScreen extends StatelessWidget {
       ),
       body: WebView(
         initialUrl: news.url,
+        javascriptMode: JavascriptMode.unrestricted,
       ),
       floatingActionButton: GetBuilder<FavoriteController>(
         builder: (controller) => FloatingActionButton(
