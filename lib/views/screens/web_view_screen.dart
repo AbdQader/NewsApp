@@ -9,7 +9,7 @@ import '/data/models/news.dart';
 class WebViewScreen extends StatelessWidget {
   
   final News news;
-  WebViewScreen(this.news);
+  const WebViewScreen(this.news);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class WebViewScreen extends StatelessWidget {
             color: Get.theme.canvasColor,
             itemBuilder: (_) => [
               PopupMenuItem(
-                child: Text('Open in Browser'), 
+                child: const Text('Open in Browser'), 
                 value: 'openInBrowser',
               ),
             ],
@@ -65,8 +65,8 @@ class WebViewScreen extends StatelessWidget {
           },
           child: Icon(
             controller.getFavoritesUrls.contains(news.url)
-            ? Icons.favorite
-            : Icons.favorite_border
+              ? Icons.favorite
+              : Icons.favorite_border
           ),
         ),
       ),

@@ -14,7 +14,7 @@ class NewsScreen extends StatelessWidget {
       : controller.getNews.isEmpty
           ? buildNewsError(context)
           : ListView.separated(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: controller.getNews.length,
               separatorBuilder: (_, index) => customDivider(),
               itemBuilder: (_, index) {

@@ -10,7 +10,7 @@ class FavoriteItem extends StatelessWidget {
   
   final News news;
   final int? index;
-  FavoriteItem(this.news, this.index);
+  const FavoriteItem(this.news, this.index);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,12 @@ class FavoriteItem extends StatelessWidget {
               'Article Removed',
               'Article removed successfully from favorites.',
               borderRadius: 0,
-              margin: EdgeInsets.all(0),
+              margin: const EdgeInsets.all(0),
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.grey[900],
               colorText: Colors.white,
               mainButton: TextButton(
-                child: Text('Undo'),
+                child: const Text('Undo'),
                 onPressed: () {
                   controller.addNewsToFavorite(news, index!);
                   Get.back();

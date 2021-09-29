@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:news_app/core/utils/constants.dart';
 
 class News {
@@ -19,7 +20,7 @@ class News {
   factory News.fromJson(Map<String, dynamic> json) => News(
     id: json[ARTICLE_ID],
     title: json[ARTICLE_TITLE],
-    publishedAt: json[ARTICLE_DATE],
+    publishedAt: DateFormat('d / MM / yyyy AT hh:mm a').format(DateTime.parse(json[ARTICLE_DATE])),
     urlToImage: json[ARTICLE_IMAGE] ?? PLACEHOLDER_IMAGE,
     url: json[ARTICLE_URL],
   );

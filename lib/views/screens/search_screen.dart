@@ -5,14 +5,13 @@ import '/data/controllers/search_controller.dart';
 import '/data/models/news.dart';
 import '/views/widgets/news_item.dart';
 
-class SearchScreen extends StatelessWidget {
-  final controller = Get.find<SearchController>();
+class SearchScreen extends GetView<SearchController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Column(
         children: [
-          buildSearchField(context, controller.searchForNews),
-          controller.isLoading
+          buildSearchField(context),
+          controller.isLoading.value
             ? Expanded(child: showCircularProgress())
             : Expanded(
                 child: ListView.separated(
@@ -31,7 +30,7 @@ class SearchScreen extends StatelessWidget {
   }
 
   // This function to build "TextField" for search
-  Widget buildSearchField(BuildContext context, Function action) {
+  Widget buildSearchField(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10.0),
       child: TextFormField(
@@ -56,9 +55,15 @@ class SearchScreen extends StatelessWidget {
             borderSide: BorderSide.none
           ),
         ),
-        onChanged: (value) => action(value),
+        onChanged: (value) {
+          if (value.trim().isNotEmpty)
+          {
+            controller.search.value = value;
+            controller.isLoading.value = true;
+          }
+        },
       ),
     );
   }
-
+  
 }

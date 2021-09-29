@@ -8,7 +8,7 @@ import '/views/screens/web_view_screen.dart';
 class NewsItem extends StatelessWidget {
   
   final News news;
-  NewsItem(this.news);
+  const NewsItem(this.news);
 
   @override
   Widget build(BuildContext context) {

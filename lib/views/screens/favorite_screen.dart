@@ -9,13 +9,12 @@ class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<FavoriteController>(
-      builder: (controller) => 
-      controller.isLoading
+      builder: (controller) => controller.isLoading
         ? Center(child: showCircularProgress())
         : controller.getFavoritesNews.isEmpty
             ? buildFavoritesEmpty(context)
             : ListView.separated(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: controller.getFavoritesNews.length,
                 separatorBuilder: (_, index) => customDivider(),
                 itemBuilder: (_, index) {
