@@ -1,4 +1,4 @@
-# news_app
+# Flutter News App
 
 🚀 A Flutter project application that allows users to check out the latest news.
 
@@ -26,6 +26,19 @@ This project was developed with the following technologies:
 - [NewsAPI](https://newsapi.org) - As a JSON API of app content.
 - [GetX](https://pub.dev/packages/get) - As a State Manager.
 - [Sqlite](https://pub.dev/packages/sqflite) - As a local database to save articles.
+
+---
+
+## Features
+
+This project contains the following features:
+
+- Browse the latest news.
+- Search for news.
+- Add article to favorite.
+- Remove article from favorite.
+- Open article in browser.
+- Toggle app theme to dark theme.
 
 ---
 
